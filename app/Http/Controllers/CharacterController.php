@@ -39,14 +39,26 @@ class CharacterController extends Controller
     {
         $character = $request->user()
             ->characters()
-            ->with('raceVersion.race')
+            ->with(['raceVersion.race', 'classes.classVersion.gameClass'])
             ->findOrFail($character);
 
         $messages = $character->messages()
             ->orderBy('id')
             ->get();
 
-        return view('characters.workshop', compact('character', 'messages'));
+        $races = $request->user()->races()
+            ->where('status', '!=', 'archived')
+            ->whereHas('versions', fn ($query) => $query->where('status', 'final'))
+            ->with(['versions' => fn ($query) => $query->where('status', 'final')->orderByDesc('version')])
+            ->orderBy('name')->get();
+
+        $gameClasses = $request->user()->gameClasses()
+            ->where('status', '!=', 'archived')
+            ->whereHas('versions', fn ($query) => $query->where('status', 'final'))
+            ->with(['versions' => fn ($query) => $query->where('status', 'final')->orderByDesc('version')])
+            ->orderBy('name')->get();
+
+        return view('characters.workshop', compact('character', 'messages', 'races', 'gameClasses'));
     }
 
     public function storeMessage(Request $request, string $character)

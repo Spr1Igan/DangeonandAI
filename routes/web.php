@@ -8,4 +8,6 @@ Route::get('/home', function () {
 
 
 require __DIR__.'/user/autorization.php';
-require __DIR__.'/characters.php';
+require __DIR__.'/character/characters.php';
+require __DIR__.'/character/races.php';
+require __DIR__.'/character/classes.php';

@@ -416,7 +416,11 @@
                 <span class="brand-mark" aria-hidden="true"></span>
                 DandAI
             </a>
-            <a class="back" href="{{ route('home') }}"><span aria-hidden="true">←</span> На главную</a>
+            <nav style="display:flex; flex-wrap:wrap; gap:14px" aria-label="Библиотеки и главная">
+                <a class="back" href="{{ route('race.index') }}">Расы</a>
+                <a class="back" href="{{ route('class.index') }}">Классы</a>
+                <a class="back" href="{{ route('home') }}"><span aria-hidden="true">←</span> На главную</a>
+            </nav>
         </header>
 
         <main>

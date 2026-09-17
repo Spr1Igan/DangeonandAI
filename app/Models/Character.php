@@ -38,4 +38,9 @@ class Character extends Model
     {
         return $this->belongsTo(RaceVersion::class);
     }
+
+    public function classes(): HasMany
+    {
+        return $this->hasMany(CharacterClass::class);
+    }
 }

@@ -12,5 +12,7 @@
         <button type="submit">Logout</button>
     </form>
     <a href="{{ route('character.index') }}">View Characters</a>
+    <a href="{{ route('race.index') }}">Библиотека рас</a>
+    <a href="{{ route('class.index') }}">Библиотека классов</a>
 </body>
 </html>

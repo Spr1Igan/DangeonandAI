@@ -132,6 +132,15 @@
         .send-button:disabled { opacity: .45; cursor: not-allowed; }
         .composer-note { margin: 10px 1px 0; color: var(--muted); font-size: 10px; line-height: 1.7; }
         .error { margin: 9px 0 0; color: var(--error); font-size: 12px; }
+        .build-form { display: grid; gap: 9px; margin-top: 15px; }
+        .build-form label { color: var(--muted); font-size: 11px; }
+        .build-form select, .build-form input { width: 100%; min-width: 0; padding: 9px; border: 1px solid #3b4662; border-radius: 8px; background: #0b111d; color: var(--text); font: inherit; font-size: 12px; }
+        .build-form button, .build-remove { padding: 8px 11px; border: 1px solid #c8ceff30; border-radius: 8px; background: #c8ceff0c; color: var(--accent); font: inherit; font-size: 11px; cursor: pointer; }
+        .build-form button:disabled { opacity: .45; cursor: not-allowed; }
+        .build-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; font-size: 11px; color: var(--accent); }
+        .class-selection { margin-top: 15px; padding-top: 14px; border-top: 1px solid var(--border); }
+        .class-selection p { font-size: 12px; overflow-wrap: anywhere; }
+        .build-remove { margin-top: 8px; color: #dfbac9; }
         @media (min-width: 761px) and (max-height: 800px) {
             .chat-scroll { padding-top: 16px; padding-bottom: 16px; }
             .empty-chat { padding: 0; }
@@ -273,8 +282,18 @@
                                         @endif
                                     </dd>
                                 </div>
-                                <div><dt>Класс</dt><dd class="unfilled">Не определён</dd></div>
+                                <div>
+                                    <dt>Классы</dt>
+                                    <dd @class(['unfilled' => $character->classes->isEmpty()])>
+                                        @forelse($character->classes as $selection)
+                                            <div>{{ $selection->classVersion->gameClass->name }} · ур. {{ $selection->level }} · в. {{ $selection->classVersion->version }}</div>
+                                        @empty
+                                            Не определены
+                                        @endforelse
+                                    </dd>
+                                </div>
                             </dl>
+                            @include('characters.partials.build')
                         </section>
 
                         <section class="summary-section" aria-labelledby="abilities-title">
@@ -408,7 +427,7 @@
         }
 
         function updateSummary() {
-            summary.open = !mobileLayout.matches;
+            summary.open = !mobileLayout.matches || summary.querySelector('[role="alert"]') !== null;
         }
 
         messageInput.addEventListener('input', updateComposer);
